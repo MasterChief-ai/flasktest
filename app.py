@@ -53,12 +53,13 @@ def add_product():
     cursor.execute("INSERT INTO products (name, price) VALUES (?, ?)", (name, price))
     conn.commit()
     new_id = cursor.lastrowid
-    conn.close()
+    
     new_product = {
         "id": new_id,
         "name": name,
         "price": price
     }
+    conn.close()
     return jsonify({"message": "Product added successfully", "product": new_product}), 201
 
 @app.route("/register", methods=["POST"])
