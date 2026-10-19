@@ -3,7 +3,7 @@ import sqlite3
 import hashlib
 import os
 import dotenv
-import wraps
+from functools import wraps
 
 dotenv.load_dotenv()
 API_TOKEN = os.getenv("API_TOKEN")
