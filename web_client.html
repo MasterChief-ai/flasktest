@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Web Client</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 2rem;
+      }
+      button, input {
+          margin: 0.5rem 0;
+          padding: 0.5rem;
+      }
+      #products {
+          margin-top: 1rem;
+      }
+  </style>
+</head>
+
+<body>
+    <h1>Flask api Webclient</h1>
+    <button onclick="fetchproducts()">Fetch Products</button>
+    <div id="Products"></div>
+    <hr>
+    <h2>Register New User</h2>
+    <input type="text" id="regusername" placeholder="Username">
+    <input type="password" id="regpassword" placeholder="Password">
+    <button onclick="registerUser()">Register</button>
+    <div id="registerMessage"></div>
+    <script>
+    
+        const BASE_URL = "https://flasktest-2z9k.onrender.com";
+
+        function fetchproducts() {
+            document.getElementById("products").innerText = "Loading..."
+
+            fetch(`${BASE_URL}/products` )
+            .then(res => res.json())
+            .then(data => {
+                const output = data.map(p => `${p.name} - ${p.price}`).join("<br>");
+                document.getElementById("products").innerHTML = output;
+            })
+            .catch(err => {
+                console.error("Failed to fetch products", err);
+                document.getElementById("products").innerText = "Error loading products ..."
+            });
+        }
+
+        function registerUser() {
+            const username = document.getElementById("regUsername").value;
+            const password = document.getElementById("regPassword").value;
+
+            fetch(`${BASE_URL}/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(response => {
+                document.getElementById("registerMessage").innerText = response.message || response.error;
+            })
+            .catch(err => {
+                console.error("Failed to register user", err);
+                document.getElementById("registerMessage").innerText = "Error registering user ..."
+            });
+        }
+    </script>
+</body>
+</html>
