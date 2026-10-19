@@ -52,7 +52,6 @@ def home():
 
 
 @app.route("/products", methods=["GET"])
-@require_token
 def get_products():
     conn = get_db_connection()
     rows = conn.execute("SELECT * FROM products").fetchall()
@@ -60,6 +59,7 @@ def get_products():
     return jsonify([dict(row) for row in rows])
 
 @app.route("/products", methods=["POST"])
+@require_token
 def add_product():
     data = request.get_json()
     name = data.get("name")
